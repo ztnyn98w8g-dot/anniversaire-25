@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Souffle tes bougies</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.cake-page{
+    text-align:center;
+    padding:40px 20px;
+}
+
+.candles{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    max-width:500px;
+    margin:40px auto;
+}
+
+.candle{
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.flame{
+    width:16px;
+    height:24px;
+    background:linear-gradient(yellow,orange);
+    border-radius:50%;
+    margin-bottom:3px;
+    animation:flicker .3s infinite alternate;
+}
+
+.wax{
+    width:12px;
+    height:50px;
+    background:white;
+    border-radius:5px;
+}
+
+.off .flame{
+    opacity:0;
+}
+
+@keyframes flicker{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.15);
+    }
+
+}
+
+#reste{
+    font-size:1.5rem;
+    color:#00e5ff;
+    margin-bottom:20px;
+}
+
+.message-fin{
+    display:none;
+    margin-top:30px;
+    font-size:1.5rem;
+    color:#ffd700;
+}
+
+.confetti{
+    position:fixed;
+    top:-10px;
+    width:10px;
+    height:10px;
+    animation:fall 4s linear forwards;
+}
+
+@keyframes fall{
+
+    to{
+        transform:translateY(110vh) rotate(720deg);
+    }
+
+}
+
+.big-cake{
+    font-size:6rem;
+    margin:20px 0;
+}
+
+.redirect{
+    margin-top:15px;
+    color:#ff4fd8;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container cake-page">
+
+<h1>🎂 Niveau 25 débloqué</h1>
+
+<div class="card">
+
+<p>
+Avant d'accéder à ta récompense...
+</p>
+
+<p>
+Souffle tes <strong>25 bougies</strong> !
+</p>
+
+<div class="big-cake">
+🎂
+</div>
+
+<p id="reste">
+25 bougies restantes
+</p>
+
+<div class="candles" id="candles"></div>
+
+<div id="fin" class="message-fin">
+
+<h2>🎉 Joyeux 25ème anniversaire mon amour ❤️</h2>
+
+<p>
+Toutes les bougies ont été soufflées !
+</p>
+
+<p class="redirect">
+Redirection vers la mission finale...
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const zone = document.getElementById("candles");
+
+let restantes = 25;
+
+for(let i=0;i<25;i++){
+
+    const bougie = document.createElement("div");
+
+    bougie.className = "candle";
+
+    bougie.innerHTML = `
+        <div class="flame"></div>
+        <div class="wax"></div>
+    `;
+
+    bougie.addEventListener("click", () => {
+
+        if(!bougie.classList.contains("off")){
+
+            bougie.classList.add("off");
+
+            restantes--;
+
+            document.getElementById("reste").innerText =
+            restantes + " bougies restantes";
+
+            if(restantes === 0){
+
+                 document.getElementById("reste").innerText =
+                "🎉 Mission accomplie !";
+
+                confettis();
+
+                 setTimeout(() => {
+
+                 window.location.href = "finale.html";
+
+                 }, 3000);
+
+}
+        }
+
+    });
+
+    zone.appendChild(bougie);
+}
+
+function confettis(){
+
+    for(let i=0;i<200;i++){
+
+        const c = document.createElement("div");
+
+        c.className = "confetti";
+
+        c.style.left = Math.random()*100 + "vw";
+
+        c.style.background =
+        `hsl(${Math.random()*360},100%,50%)`;
+
+        c.style.animationDelay =
+        (Math.random()*2) + "s";
+
+        document.body.appendChild(c);
+    }
+}
+
+</script>
+
+</body>
+</html>
